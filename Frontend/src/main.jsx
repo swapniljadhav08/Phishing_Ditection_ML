@@ -6,7 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './Home.jsx';
 import { ClerkProvider } from '@clerk/clerk-react'
 import PhishGuardPage from './menu/PhishGuardPage.jsx';
-import ShowCase from './menu/showCase.jsx';
+import Showcase from './menu/showCase.jsx';
+import HowItWorks from './menu/HowItWork.jsx';
+import Reports from './menu/Reports.jsx';
+
  
  
   const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -30,7 +33,15 @@ const router = createBrowserRouter([
   },
   {
     path:'/showCase',
-    element:<ShowCase/>
+    element:<Showcase/>
+  },
+  {
+    path:'/howItWork',
+    element:<HowItWorks/>
+  },
+  {
+    path:"/reports",
+    element:<Reports/>
   },
 ]);
 

@@ -21,10 +21,10 @@ export default function Footer() {
   <a href="#" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400">
     <i className="bi bi-twitter text-white text-lg"></i>
   </a>
-  <a href="#" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400">
+  <a href="https://www.linkedin.com/in/swapnil-jadhav-90247a2b0?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400 " target="blank">
     <i className="bi bi-linkedin text-white text-lg"></i>
   </a>
-  <a href="#" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400">
+  <a href="https://github.com/swapniljadhav08" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400" target="blank">
     <i className="bi bi-github text-white text-lg"></i>
   </a>
   <a href="#" className="pl-3 pt-2 h-[40px] w-[40px] bg-green-600 rounded-full hover:bg-green-400">
@@ -58,13 +58,13 @@ export default function Footer() {
           <h3 className="font-semibold mb-3">Contact</h3>
           <ul className="space-y-3 text-sm text-gray-600">
             <li className="flex items-center gap-2">
-              <MapPin size={16} /> Dhaka, Bangladesh
+              <MapPin size={16} /> Kolhapur, Maharastra
             </li>
             <li className="flex items-center gap-2">
-              <Mail size={16} /> contact@chillbion.com
+              <Mail size={16} /> sm2021jadhav@gmail.com
             </li>
             <li className="flex items-center gap-2">
-              <Phone size={16} /> +1 (800) 123-4567
+              <Phone size={16} /> +91 9021397009
             </li>
           </ul>
         </div>

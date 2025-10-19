@@ -44,7 +44,9 @@ function Home() {
             </div>
             <div className="slide-in-bck-right-normal">
               <SpotlightCard className="flex flex-col items-center justify-center custom-spotlight-card h-[60px] w-[260px]" spotlightColor="rgba(0, 229, 255, 0.2)">
+                <Link to="/howItWork">
                 <button className="h-[50px] w-[240px] cursor-pointer">Learn How It Works</button>
+                </Link>                
               </SpotlightCard>
             </div>
           </div>
@@ -160,7 +162,10 @@ function Home() {
             <h2 className="text-md text-gray-700 font-bold">Stay Safe Online, For Free</h2>
             <p className="text-lg text-gray-600 mt-6">Quick setup, easy to use, and completely free to start securing your digital presence.</p>
             <p className="text-lg font-bold text-gray-600 mb-6">— One Click Away</p>
+            <Link to="/PhishGuardPage">
             <button className="px-6 py-3 bg-gradient-to-r from-green-500 via-lime-400 to-lime-600 text-gray-600 font-semibold rounded-full transition cursor-pointer">Get Started For Free</button>
+            </Link>
+            
           </div>
         </section>
         <section>

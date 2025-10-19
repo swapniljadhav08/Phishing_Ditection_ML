@@ -1,7 +1,10 @@
 import { useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Particles from "../components/Particles";
 import { motion } from "framer-motion";
+import { db } from "../components/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 function PhishingDetection() {
   const navigate = useNavigate();
@@ -9,6 +12,36 @@ function PhishingDetection() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+
+  const HISTORY_KEY = "phish_history";
+
+  // const saveToHistory = (entry) => {
+  //   try {
+  //     // const raw = localStorage.getItem(HISTORY_KEY);
+
+  //     const arr = raw ? JSON.parse(raw) : [];
+  //     arr.unshift(entry); // newest first
+  //     if (arr.length > 200) arr.splice(200); // optional max length
+  //     // localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+  //   } catch (err) {
+  //     console.error("Failed to save history:", err);
+  //   }
+  // };
+
+  const saveToHistory = async (entry) => {
+  try {
+    await addDoc(collection(db, "phish_history"), {
+      url: entry.url,
+      verdict: entry.verdict,
+      confidence: entry.confidence,
+      raw: entry.raw, // full backend response
+      createdAt: serverTimestamp()
+    });
+    console.log("✅ History saved to Firestore");
+  } catch (error) {
+    console.error("❌ Error saving history:", error);
+  }
+};
 
   const handleCheck = async (e) => {
     e.preventDefault();
@@ -27,6 +60,18 @@ function PhishingDetection() {
       const data = await res.json();
       console.log("Backend Response:", data);
       setResult(data);
+
+      // Save to history
+      saveToHistory({
+        date: new Date().toISOString(),
+        url: data.url ?? url,
+        verdict: data.majority_vote?.label ?? "Unknown",
+        confidence:
+          data.majority_vote?.probability != null
+            ? (data.majority_vote.probability * 100).toFixed(1)
+            : null,
+        raw: data, // optional: store full result
+      });
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
@@ -51,13 +96,19 @@ function PhishingDetection() {
         />
       </div>
 
-      {/* Back Button */}
-      <div className="absolute z-20 top-4 left-4 m-3 flex items-start">
+      {/* Top Buttons */}
+      <div className="absolute z-20 top-4 left-4 flex gap-3 m-3">
         <button
           onClick={() => navigate("/")}
-          className="mb-4 px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-400 transition cursor-pointer"
+          className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-400 transition"
         >
           ← Back
+        </button>
+        <button
+          onClick={() => navigate("/showcase")}
+          className="px-4 py-2 rounded-lg bg-slate-700 text-white hover:bg-slate-600 transition"
+        >
+          History
         </button>
       </div>
 
@@ -124,9 +175,9 @@ function PhishingDetection() {
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{
-                      width: `${(
-                        result.majority_vote.probability * 100
-                      ).toFixed(1)}%`,
+                      width: `${
+                        (result.majority_vote.probability * 100).toFixed(1)
+                      }%`,
                     }}
                     transition={{ duration: 1 }}
                     className={`h-4 rounded-full ${

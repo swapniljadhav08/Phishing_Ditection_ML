@@ -22,9 +22,9 @@ function Header() {
         {/* Desktop Navbar */}
         <div className="hidden md:flex items-center h-[60px] px-6 py-3 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl">
           <ul className="flex gap-8">
-            <li className="border-b-2 border-green-500"><a href="#">Home</a></li>
-            <li><a href="#">Docs</a></li>
-            <li><a href="#">Showcase</a></li>
+            <li className="border-b-2 border-green-500"><a href="/">Home</a></li>
+            <li><a href="/howItWork">Docs</a></li>
+            <li><a href="/showCase">Showcase</a></li>
           </ul>
         </div>
 
