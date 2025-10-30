@@ -6,16 +6,8 @@ import pandas as pd
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 
-# Example list of sensitive words (you can expand this)
-SENSITIVE_WORDS = [
-    'login', 'secure', 'bank', 'account', 'update', 'verify',
-    'password', 'signin', 'confirm', 'ebayisapi', 'paypal'
-]
 
-# Example list of brand names (for EmbeddedBrandName)
-BRAND_NAMES = [
-    'google', 'facebook', 'amazon', 'apple', 'microsoft', 'paypal'
-]
+
 
 def extract_url_features(url):
     features = {}
@@ -63,12 +55,7 @@ def extract_url_features(url):
     features['DomainInSubdomains'] = 1 if any(main_domain in sub for sub in hostname.split('.')[:-2]) else 0
     features['DomainInPaths'] = 1 if main_domain in path else 0
 
-    # --- Sensitive Words ---
-    features['NumSensitiveWords'] = sum(word in url.lower() for word in SENSITIVE_WORDS)
-
-    # --- Embedded Brand Name ---
-    features['EmbeddedBrandName'] = 1 if any(b in url.lower() for b in BRAND_NAMES) else 0
-
+  
     # --- HTML-based features ---
     try:
         r = requests.get(url, timeout=5)

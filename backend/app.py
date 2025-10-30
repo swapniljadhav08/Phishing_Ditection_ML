@@ -10,17 +10,18 @@ from starlette.concurrency import run_in_threadpool
 
 import feature_extract as fe  # your existing extractor module
 
-app = FastAPI(title="Phishing URL Ensemble Predictor")
-
 from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="Phishing URL Ensemble Predictor")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or specify ["http://localhost:3000"]
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 
 # ---------- Request / Response models ----------
@@ -51,34 +52,36 @@ rf_model = None
 def load_models():
     global svm_model, svm_scaler, lr_model, lr_scaler, rf_model
     try:
-        with open("svm_model.pkl", "rb") as f:
+        with open(r"models\svm_model.pkl", "rb") as f:
             svm_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load svm_model.pkl: {e}")
 
     try:
-        with open("scaler_SVM.pkl", "rb") as f:
+        with open(r"models\scaler_SVM.pkl", "rb") as f:
             svm_scaler = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load scaler_SVM.pkl: {e}")
 
     try:
-        with open("logistic_regression_model.pkl", "rb") as f:
+        with open(r"models\logistic_regression_model.pkl", "rb") as f:
             lr_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load logistic_regression_model.pkl: {e}")
 
     try:
-        with open("scaler_LR.pkl", "rb") as f:
+        with open(r"models/scaler_LR.pkl", "rb") as f:
             lr_scaler = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load scaler_LR.pkl: {e}")
 
     try:
-        with open("random_forest_model.pkl", "rb") as f:
+        with open(r"models/random_forest_model.pkl", "rb") as f:
             rf_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load random_forest_model.pkl: {e}")
+    
+   
 
 # ---------- Helper: safe feature extraction (runs in threadpool) ----------
 async def extract_features_threadsafe(url: str) -> pd.DataFrame:
