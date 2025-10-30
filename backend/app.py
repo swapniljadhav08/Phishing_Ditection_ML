@@ -7,6 +7,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, HttpUrl
 from starlette.concurrency import run_in_threadpool
+from pathlib import Path
 
 import feature_extract as fe  # your existing extractor module
 
@@ -51,36 +52,40 @@ rf_model = None
 @app.on_event("startup")
 def load_models():
     global svm_model, svm_scaler, lr_model, lr_scaler, rf_model
+
+    # Base directory of this file
+    BASE_DIR = Path(__file__).resolve().parent
+    MODELS_DIR = BASE_DIR / "models"
+
     try:
-        with open(r"models\svm_model.pkl", "rb") as f:
+        with open(MODELS_DIR / "svm_model.pkl", "rb") as f:
             svm_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load svm_model.pkl: {e}")
 
     try:
-        with open(r"models\scaler_SVM.pkl", "rb") as f:
+        with open(MODELS_DIR / "scaler_SVM.pkl", "rb") as f:
             svm_scaler = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load scaler_SVM.pkl: {e}")
 
     try:
-        with open(r"models\logistic_regression_model.pkl", "rb") as f:
+        with open(MODELS_DIR / "logistic_regression_model.pkl", "rb") as f:
             lr_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load logistic_regression_model.pkl: {e}")
 
     try:
-        with open(r"models/scaler_LR.pkl", "rb") as f:
+        with open(MODELS_DIR / "scaler_LR.pkl", "rb") as f:
             lr_scaler = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load scaler_LR.pkl: {e}")
 
     try:
-        with open(r"models/random_forest_model.pkl", "rb") as f:
+        with open(MODELS_DIR / "random_forest_model.pkl", "rb") as f:
             rf_model = pickle.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load random_forest_model.pkl: {e}")
-    
    
 
 # ---------- Helper: safe feature extraction (runs in threadpool) ----------
